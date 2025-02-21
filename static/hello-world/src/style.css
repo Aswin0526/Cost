@@ -1,55 +1,80 @@
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f7fc;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-  }
-  
-  /* Container */
-  .container {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    max-width: 90%;
-    width: 1200px;
-    overflow-x: auto;
-  }
-  
-  /* Table */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  th, td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: left;
-  }
-  
-  th {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-  }
-  
-  tbody tr:hover {
-    background-color: #f1f1f1;
-    transition: 0.3s;
-  }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    th, td {
-      padding: 8px;
-    }
-    .container {
-      padding: 15px;
-    }
-  }
-  
+.container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.add-btn {
+  background-color: #6200ea;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin: 10px 0;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.saved-container {
+  background-color: #f3f3f3;
+  padding: 10px;
+  min-height: 50px;
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.saved-box {
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid #ccc;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  background: red;
+  color: white;
+  border: none;
+  padding: 2px 5px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+}
+
+.popup label {
+  display: block;
+  margin: 5px 0;
+}
+
+.popup input {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-between;
+}

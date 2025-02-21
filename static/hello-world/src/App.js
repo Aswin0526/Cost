@@ -1,44 +1,121 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./style.css";
 
 function App() {
-  const [data, setData] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [name, setName] = useState("");
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  const [savedItems, setSavedItems] = useState([]);
+  const [editingIndex, setEditingIndex] = useState(null); // Track which item is being edited
 
-  useEffect(() => {
-    // Dummy data for testing
-    const dummyData = [
-      {
-        ProductName: "Compute Engine",
-        ProductFamily: "Compute",
-        Region: "US-East",
-        "Resource ID": "12345",
-        Operation: "Instance Usage",
-        "Effective Cost": "$50.00",
-        "Resource Tag": "Production",
-        "Start Date": "2024-01-01",
-        "End Date": "2024-01-31",
-        "Usage Amount": "100 hours",
-      },
-      {
-        ProductName: "Cloud Storage",
-        ProductFamily: "Storage",
-        Region: "US-West",
-        "Resource ID": "67890",
-        Operation: "Data Stored",
-        "Effective Cost": "$30.00",
-        "Resource Tag": "Backup",
-        "Start Date": "2024-01-01",
-        "End Date": "2024-01-31",
-        "Usage Amount": "500 GB",
-      },
-    ];
+  // Open popup (for adding new or editing existing)
+  const openPopup = (index = null) => {
+    if (index !== null) {
+      // If editing an existing box
+      setName(savedItems[index].name);
+      setId(savedItems[index].id);
+      setPassword(savedItems[index].password);
+      setEditingIndex(index);
+    } else {
+      // If adding a new entry
+      setName("");
+      setId("");
+      setPassword("");
+      setEditingIndex(null);
+    }
+    setShowPopup(true);
+  };
 
-    setData(dummyData);
-  }, []);
+  // Close popup
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+
+  // Save new or edited item
+  const handleSave = () => {
+    if (name.trim() === "") return; // Prevent saving empty names
+    if (editingIndex !== null) {
+      // Editing existing entry
+      const updatedItems = [...savedItems];
+      updatedItems[editingIndex] = { name, id, password };
+      setSavedItems(updatedItems);
+    } else {
+      // Adding new entry
+      setSavedItems([...savedItems, { name, id, password }]);
+    }
+    closePopup();
+  };
+
+  // Delete an item
+  const handleDelete = (index) => {
+    setSavedItems(savedItems.filter((_, i) => i !== index));
+  };
 
   return (
     <div className="container">
       <h1>Cost Report</h1>
+      <button className="add-btn" onClick={() => openPopup()}>
+        Add
+      </button>
+
+      {/* Container for saved items */}
+      <div className="saved-container">
+        {savedItems.map((item, index) => (
+          <div
+            key={index}
+            className="saved-box"
+            onClick={() => openPopup(index)}
+          >
+            {item.name}
+            <button
+              className="delete-btn"
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent opening popup when clicking delete
+                handleDelete(index);
+              }}
+            >
+              X
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {/* Popup Modal */}
+      {showPopup && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <h2>{editingIndex !== null ? "Edit Item" : "Add New Item"}</h2>
+            <label>Name:</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+
+            <label>ID:</label>
+            <input
+              type="text"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+            />
+
+            <label>Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <div className="popup-buttons">
+              <button onClick={handleSave}>Save</button>
+              <button onClick={closePopup}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Table */}
       <table>
         <thead>
           <tr>
@@ -55,20 +132,19 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
-            <tr key={index}>
-              <td>{item["ProductName"]}</td>
-              <td>{item["ProductFamily"]}</td>
-              <td>{item["Region"]}</td>
-              <td>{item["Resource ID"]}</td>
-              <td>{item["Operation"]}</td>
-              <td>{item["Effective Cost"]}</td>
-              <td>{item["Resource Tag"]}</td>
-              <td>{item["Start Date"]}</td>
-              <td>{item["End Date"]}</td>
-              <td>{item["Usage Amount"]}</td>
-            </tr>
-          ))}
+          {/* Dummy Data */}
+          <tr>
+            <td>Compute Engine</td>
+            <td>Compute</td>
+            <td>US-East</td>
+            <td>12345</td>
+            <td>Instance Usage</td>
+            <td>$50.00</td>
+            <td>Production</td>
+            <td>2024-01-01</td>
+            <td>2024-01-31</td>
+            <td>100 hours</td>
+          </tr>
         </tbody>
       </table>
     </div>
